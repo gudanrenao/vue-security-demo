@@ -21,7 +21,7 @@
         </div>
         <div>
           <div style="width: 100%;display: flex;justify-content: center">
-            <img :src="item.headUrl" alt="item.name" style="width: 70px;height: 70px;border-radius: 70px">
+            <img :src="item.headUrl !== '' ? item.headUrl : ''" alt="暂无头像" style="width: 70px;height: 70px;border-radius: 70px">
           </div>
           <div style="margin-top: 20px">
             <div><span class="user-info">用户名:{{item.username}}</span></div>

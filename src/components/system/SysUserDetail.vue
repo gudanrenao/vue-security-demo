@@ -76,7 +76,7 @@
     },
     created() {
       this.sysUser.id = this.$route.query.userId;
-      if (this.sysUser.id > 0) {
+      if (this.sysUser.id != null && this.sysUser.id !== 0) {
         this.getInfo(this.sysUser.id)
       }
     },
@@ -97,37 +97,39 @@
       onSubmit: function () {
         let _this = this;
         console.log(JSON.stringify(_this.sysUser));
-        const loading = _this.$loading({
-          lock: true,
-          text: '保存中,请稍后。。。',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
+        // const loading = _this.$loading({
+        //   lock: true,
+        //   text: '保存中,请稍后。。。',
+        //   spinner: 'el-icon-loading',
+        //   background: 'rgba(0, 0, 0, 0.7)'
+        // });
         _this.postRequest('/permission/user',_this.sysUser).then(resp=> {
-          loading.close();
-          console.log(resp.status + '---' + resp.data.errCode)
-          if (resp && resp.status === 200 && resp.data.errCode === 0) {
+          // loading.close();
+          if (resp) {
             _this.$alert('操作成功', 'result', {
               confirmButtonText: '确定',
               callback: action => {
                 this.$router.push({path: '/sys/userList'});
               }
             });
-          } else {
-            _this.$alert('操作失败-' + resp.data.errMsg, 'result', {
-              confirmButtonText: '确定',
-              callback: action => {
-              }
-            });
           }
-        }).catch(function (error) {
-          loading.close();
-          _this.$alert('操作失败-系统异常', 'result', {
-            confirmButtonText: '确定',
-            callback: action => {
-            }
-          });
         })
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
+        const isLt2M = file.size / 1024 / 1024 < 1;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 1MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      pictureSuccess: function (response, file, fileList) {
+        console.log(response)
+        this.sysUser.headUrl = response.data.data;
       }
     }
   }

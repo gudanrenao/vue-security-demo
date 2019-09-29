@@ -4,13 +4,13 @@
       <el-tab-pane label="用户列表">
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item label="账号名称:">
-            <el-input v-model="criteria.name" placeholder="账号名称"></el-input>
+            <el-input v-model="criteria.name" placeholder="账号名称" clearable></el-input>
           </el-form-item>
           <el-form-item label="手机号码:">
-            <el-input v-model="criteria.phone" placeholder="手机号码"></el-input>
+            <el-input v-model="criteria.phone" placeholder="手机号码" clearable></el-input>
           </el-form-item>
           <el-form-item label="是否禁用:">
-            <el-select v-model="criteria.enabled" placeholder="请选择">
+            <el-select v-model="criteria.enabled" placeholder="请选择" clearable>
               <el-option v-for="item in enabledList" :key="item.value" :label="item.label"
                          :value="item.value">
               </el-option>
